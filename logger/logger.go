@@ -18,7 +18,7 @@ type logger struct {
 	entry  *logrus.Entry
 }
 
-func NewLogger() *logger {
+func newLogger() logger {
 	Logger := logger{logger: logrus.New()}
 	Logger.logger.SetFormatter(&logrus.TextFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
@@ -37,22 +37,24 @@ func NewLogger() *logger {
 	}
 
 	Logger.getCallerInfo()
-	return &Logger
+	return Logger
 }
 
-var l = NewLogger()
+var l *logger
 
 func init() {
 
-	src, err := setOutputFile()
+	_, err := init_OutputFile()
 	if err != nil {
 		log.Fatalf("failed to set output file: %v", err)
 	}
-	l.logger.Out = src
 
+	logger_stu := newLogger()
+
+	l = &logger_stu
 }
 
-func setOutputFile() (*os.File, error) {
+func init_OutputFile() (*os.File, error) {
 	// 设置日志文件路径
 	now := time.Now()
 	logFilePath := "logs/"
@@ -100,7 +102,7 @@ func (l *logger) getCallerInfo() {
 	l.entry = entry
 }
 
-func (l *logger) WriteLog(err string) {
+func WriteLog(err string) {
 	level := l.getLevel(err)
 	l.getCallerInfo()
 	entry := l.entry.WithFields(logrus.Fields{
@@ -136,13 +138,4 @@ func (l *logger) crashHandle() {
 			"funcName": "crashHandle",
 		}).Panic(err)
 	}
-}
-
-func (l *logger) CheckFilePath() string {
-	return l.logger.Out.(*os.File).Name()
-}
-
-func (l *logger) Close() {
-	l.logger.Out.(*os.File).Close()
-	fmt.Println("close log file")
 }
