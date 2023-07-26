@@ -1,9 +1,7 @@
 package majiang
 
 import (
-	"fmt"
 	"math/rand"
-	"time"
 )
 
 type Card struct {
@@ -121,97 +119,4 @@ func (d *Deck) Draw() Card {
 
 func (d *Deck) Shuffle() {
 	rand.Shuffle(len(d.Cards), func(i, j int) { d.Cards[i], d.Cards[j] = d.Cards[j], d.Cards[i] })
-}
-
-func main() {
-	rand.Seed(time.Now().UnixNano())
-
-	player := Player{}
-	count := 0
-	for checkWin := false; !checkWin; {
-
-		deck := NewDeck()
-		deck.Shuffle()
-
-		for i := 0; i < 14; i++ {
-			player.Draw(deck)
-		}
-
-		if player.CheckWin() {
-			count++
-			checkWin = true
-			fmt.Println(player.Hand)
-			fmt.Println("Player win!")
-
-		} else {
-			count++
-			fmt.Println(player.Hand)
-			fmt.Println("Player lose!")
-		}
-		player.Drop()
-		//time.Sleep(3 * time.Second)
-
-		//若20次未胡牌,则给出一副满足7对子胡牌条件的牌
-		if count > 20 {
-			random := rand.Intn(2)
-			if random == 0 {
-				finish_hand := []Card{
-					Card{Value: "A", Count: 1},
-					Card{Value: "A", Count: 1},
-					Card{Value: "B", Count: 1},
-					Card{Value: "B", Count: 1},
-					Card{Value: "C", Count: 1},
-					Card{Value: "C", Count: 1},
-					Card{Value: "D", Count: 1},
-					Card{Value: "D", Count: 1},
-					Card{Value: "E", Count: 1},
-					Card{Value: "E", Count: 1},
-					Card{Value: "F", Count: 1},
-					Card{Value: "F", Count: 1},
-					Card{Value: "G", Count: 1},
-					Card{Value: "G", Count: 1},
-				}
-
-				player.Hand = finish_hand
-
-				if player.CheckWin() {
-					checkWin = true
-					fmt.Println(player.Hand)
-					fmt.Println("Player win!")
-				} else {
-					fmt.Println(player.Hand)
-					fmt.Println("Player lose!")
-				}
-			} else {
-				finish_hand := []Card{
-					Card{Value: "A", Count: 1},
-					Card{Value: "I", Count: 1},
-					Card{Value: "a", Count: 1},
-					Card{Value: "i", Count: 1},
-					Card{Value: "1", Count: 1},
-					Card{Value: "9", Count: 1},
-					Card{Value: "发", Count: 1},
-					Card{Value: "中", Count: 1},
-					Card{Value: "白", Count: 1},
-					Card{Value: "东", Count: 1},
-					Card{Value: "南", Count: 1},
-					Card{Value: "西", Count: 1},
-					Card{Value: "北", Count: 1},
-					Card{Value: "A", Count: 1},
-				}
-
-				player.Hand = finish_hand
-
-				if player.CheckWin() {
-					checkWin = true
-					fmt.Println(player.Hand)
-					fmt.Println("Player win!")
-				} else {
-					fmt.Println(player.Hand)
-					fmt.Println("Player lose!")
-				}
-			}
-		}
-
-	}
 }
