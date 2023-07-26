@@ -15,6 +15,12 @@ type Player struct {
 
 func (p *Player) Draw(deck *Deck) {
 	card := deck.Draw()
+	if card.Value == "万能牌" {
+		index := rand.Intn(len(deck.Cards) - 1)
+		card = deck.Cards[index]
+		deck.Cards = append(deck.Cards[:index], deck.Cards[index+1:]...)
+	}
+
 	p.Hand = append(p.Hand, card)
 }
 
@@ -100,7 +106,7 @@ type Deck struct {
 }
 
 func NewDeck() *Deck {
-	values := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "a", "b", "c", "d", "e", "f", "g", "h", "i", "1", "2", "3", "4", "5", "6", "7", "8", "9", "发", "中", "白", "东", "南", "西", "北"}
+	values := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "a", "b", "c", "d", "e", "f", "g", "h", "i", "1", "2", "3", "4", "5", "6", "7", "8", "9", "发", "中", "白", "东", "南", "西", "北", "万能牌"}
 	cards := make([]Card, 0, len(values)*4)
 	for _, value := range values {
 		for i := 0; i < 4; i++ {
