@@ -1,0 +1,14 @@
+global:
+  user: curve
+  ssh_port: 22
+  private_key_file: /home/curve/.ssh/id_rsa
+
+hosts:
+  - host: server-host1
+    hostname: 192.168.26.128
+  - host: server-host2
+    hostname: 192.168.26.129
+  - host: server-host3
+    hostname: 192.168.26.130
+  - host: client-host
+    hostname: 172.24.201.56

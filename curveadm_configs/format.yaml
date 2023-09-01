@@ -1,0 +1,9 @@
+container_image: opencurvedocker/curvebs:v1.2
+host:
+  - server-host1
+  - server-host2
+  - server-host3
+disk:
+  - /dev/sdb1:/dev/curve_data0:90  # device:mount_path:format_percent
+  - /dev/sdc1:/dev/curve_data1:90  
+  - /dev/sdd1:/dev/curve_data2:90
